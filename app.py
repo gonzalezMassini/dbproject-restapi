@@ -1,5 +1,8 @@
 from flask import Flask, request, jsonify
 from flask_mysqldb import MySQL
+from controllers.userCreation import user_creation
+from controllers.getAllUsers import get_all_users
+from controllers.getSingleUser import get_single_user
 
 # init app
 app = Flask(__name__)
@@ -17,26 +20,25 @@ mysql = MySQL(app)
 # create user
 @app.route('/create_user', methods=['POST'])
 def create_user():
-  uemail = request.json['uemail']
-  uname = request.json['uname']
-  upassword = request.json['upassword']
-  urole = request.json['urole']
+  return user_creation(request, mysql)
 
-  # create cursor
-  cur = mysql.connection.cursor()
+# get all users
+@app.route('/users', methods=['GET'])
+def get_users():
+  return get_all_users(mysql)
 
-  # execute
-  cur.execute("INSERT INTO users(uemail, uname, upassword, urole) VALUES(%s,%s,%s,%s)",(uemail, uname, upassword, urole))
+# user
+@app.route('/user/<int:uid>', methods=['GET'])
+def get_user(uid):
+  if request.method == 'GET':
+    return get_single_user(uid,mysql)
 
-  # commit to DB
-  mysql.connection.commit()
+# user occupance
+@app.route('/user/<int:uid>/user_occupance',methods=['POST'])
+def user_occupance():
+  return 'trying to be occupied'
 
-  # close connection
-  cur.close()
-  
-  return {'uemail':uemail, 'uname':uname, 'upassword':upassword, 'urole':urole}
-
-
+# example route
 @app.route('/', methods=['GET'])
 def get():
   return {'msg':'hello word'}
