@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request
 from flask_mysqldb import MySQL
 from controllers.userCreation import user_creation
 from controllers.getAllUsers import get_all_users
