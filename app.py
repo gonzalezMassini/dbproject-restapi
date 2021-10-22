@@ -1,48 +1,75 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_mysqldb import MySQL
-from controllers.userCreation import user_creation
-from controllers.getAllUsers import get_all_users
-from controllers.getSingleUser import get_single_user
+from flask_cors import CORS
+import psycopg2
+from controllers.createUserOccupance import create_user_occupance
+from controllers.UsersController import usersController
+
 
 # init app
 app = Flask(__name__)
+CORS(app)
 
-# config mysql
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'flask'
-app.config['MYSQL_PASSWORD'] = 'none'
-app.config['MYSQL_DB'] = 'dbproject'
-app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-# init MySQL
-mysql = MySQL(app)
 
 
 # create user
 @app.route('/create_user', methods=['POST'])
 def create_user():
-  return user_creation(request, mysql)
+  return usersController.insertUser(request)
 
-# get all users
+# delete user
+@app.route('/delete_user/<int:id>', methods=['DELETE'])
+def delete_user(id):
+  return usersController.removeUser(id)
+
+# read all users
 @app.route('/users', methods=['GET'])
 def get_users():
-  return get_all_users(mysql)
+  return usersController.showUsers()
 
-# user
-@app.route('/user/<int:uid>', methods=['GET'])
-def get_user(uid):
-  if request.method == 'GET':
-    return get_single_user(uid,mysql)
+# read single user
+@app.route('/user/<int:id>', methods=['GET'])
+def get_user(id):
+  return usersController.showUser(id)
+
+
+
+
+
+
+
+
+
+# update user
+@app.route('/update_user/<int:id>', methods=['PUT'])
+def update_user(id):
+  return userUpdate(id, request, postgresql)
+
+
+
+
+
+
 
 # user occupance
-@app.route('/user/<int:uid>/user_occupance',methods=['POST'])
-def user_occupance():
-  return 'trying to be occupied'
+@app.route('/user/<int:id>/user_occupance',methods=['POST'])
+def user_occupance(id):
+  return create_user_occupance(id, mysql, request)
 
-# example route
-@app.route('/', methods=['GET'])
-def get():
-  return {'msg':'hello word'}
+# create meeting
+@app.route('/user/<int:id>/create_meeting', methods=['POST'])
+def create_meeting(id):
+  return 'trying to create a meet as user '+ str(id)
 
+# room occupance
+@app.route('/user/<int:id>/room_occupance',methods=['POST'])
+def room_occupance(id):
+  return 'trying to occupy a room as a staff'
+
+
+@app.route('/')
+def greet():
+  return 'hello'
 
 # run server
 if __name__ == '__main__':
