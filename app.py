@@ -1,7 +1,5 @@
 from flask import Flask, request, jsonify
-from flask_mysqldb import MySQL
 from flask_cors import CORS
-import psycopg2
 from controllers.createUserOccupance import create_user_occupance
 from controllers.UsersController import usersController
 
