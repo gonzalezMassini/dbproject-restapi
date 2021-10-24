@@ -12,7 +12,7 @@ class UsersModel():
     cur.execute("SELECT * FROM users;")
     result = cur.fetchall() 
     cur.close()
-    return jsonify(result)
+    return result
     
 
   def readUser(self,id):
@@ -20,7 +20,7 @@ class UsersModel():
     result = cur.execute('SELECT * FROM users where uid=%s',[id])
     user = cur.fetchone()
     cur.close()
-    return jsonify(user)
+    return user
 
   def createUser(self,uemail,uname,upassword,urole):
     # create cursor
@@ -35,7 +35,8 @@ class UsersModel():
     self.conn.commit()
     # close connection
     cur.close()
-    return jsonify(createdUser)
+    # return jsonify(createdUser)
+    return createdUser
 
 
   def deleteUser(self, id):
@@ -44,8 +45,17 @@ class UsersModel():
     self.conn.commit()
     cur.close() 
 
-    return {"msg":"user deleted"}
+    return jsonify({"msg":"user deleted"})
 
+
+  def updateUser(self, id, uemail, uname, upassword, urole):
+    cur = self.conn.cursor()
+    cur.execute('UPDATE users SET uemail=%s, uname=%s, upassword=%s, urole=%s WHERE uid=%s',(uemail, uname, upassword, urole, id))
+    self.conn.commit()
+    cur.close()
+
+    return jsonify({'msg':'user updated'})
+    
   
 
 

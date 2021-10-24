@@ -21,27 +21,26 @@ def delete_user(id):
   return usersController.removeUser(id)
 
 # read all users
-@app.route('/users', methods=['GET'])
+@app.route('/read_users', methods=['GET'])
 def get_users():
   return usersController.showUsers()
 
 # read single user
-@app.route('/user/<int:id>', methods=['GET'])
+@app.route('/read_user/<int:id>', methods=['GET'])
 def get_user(id):
   return usersController.showUser(id)
-
-
-
-
-
-
-
-
 
 # update user
 @app.route('/update_user/<int:id>', methods=['PUT'])
 def update_user(id):
-  return userUpdate(id, request, postgresql)
+  return usersController.editUser(id, request)
+
+
+
+
+
+
+
 
 
 
