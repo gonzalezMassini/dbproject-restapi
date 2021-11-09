@@ -64,5 +64,17 @@ class UsersController():
 
     return self.model.updateUser(id, uemail, uname, upassword, urole)
 
+
+  def showUserOccupance(self,id):
+    occupances=[]
+    result = self.model.readUserOccupance(id)
+    for i in range(len(result)):
+      occupances.append({
+        "uname":result[i][0],
+        "uotimeframe":str(result[i][1])
+      })
+      
+    return jsonify(occupances)
+
 usersController = UsersController()
       

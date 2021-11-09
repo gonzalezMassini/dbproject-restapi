@@ -4,7 +4,7 @@ import psycopg2
 class UsersModel():
 
   def __init__(self):
-    connection_url = "dbname=%s user=%s password=%s port=%s host='localhost'"%(pg_config['dbname'], pg_config['user'],pg_config['password'],pg_config['dbport'])
+    connection_url = "dbname=%s user=%s password=%s port=%s host='%s'"%(pg_config['dbname'], pg_config['user'],pg_config['password'],pg_config['dbport'],pg_config['host'])
     self.conn = psycopg2.connect(connection_url)
 
   def readUsers(self):
@@ -55,6 +55,15 @@ class UsersModel():
     cur.close()
 
     return jsonify({'msg':'user updated'})
+
+
+  def readUserOccupance(self, id):
+    cur = self.conn.cursor()
+    cur.execute('select uname, uotimeframe from user_occupance natural inner join users where uid=%s',[id])
+    queryResult = cur.fetchall()
+    result = cur.fetchall()
+    cur.close()
+    return queryResult
     
   
 

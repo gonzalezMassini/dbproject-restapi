@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from controllers.createUserOccupance import create_user_occupance
 from controllers.UsersController import usersController
+from controllers.MeetingsController import meetingsController
 
 
 # init app
@@ -29,40 +30,41 @@ def get_users():
 @app.route('/read_user/<int:id>', methods=['GET'])
 def get_user(id):
   return usersController.showUser(id)
-
 # update user
 @app.route('/update_user/<int:id>', methods=['PUT'])
 def update_user(id):
   return usersController.editUser(id, request)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-# user occupance
-@app.route('/user/<int:id>/user_occupance',methods=['POST'])
+# read user occupance
+@app.route('/user/<int:id>/read_user_occupance', methods=['GET'])
 def user_occupance(id):
-  return create_user_occupance(id, mysql, request)
+  return usersController.showUserOccupance(id)
+
+# create user occupance
+
+# update user occupance
+
+# delete user occupance
 
 # create meeting
-@app.route('/user/<int:id>/create_meeting', methods=['POST'])
-def create_meeting(id):
-  return 'trying to create a meet as user '+ str(id)
+@app.route('/create_meeting', methods=['POST'])
+def create_meeting():
+  # return 'trying to create a meet as user '
+  return meetingsController.insertMeeting(request)
 
-# room occupance
-@app.route('/user/<int:id>/room_occupance',methods=['POST'])
-def room_occupance(id):
-  return 'trying to occupy a room as a staff'
+# read meetings
+@app.route('/read_meetings', methods=['GET'])
+def read_meetings():
+  return meetingsController.showMeetings()
 
+# read meeting
+@app.route('/read_meeting/<int:id>', methods=['GET'])
+def read_meeting(id):
+  return meetingsController.showMeeting(id)
+
+# update meeting
+
+# delete meeting
 
 @app.route('/')
 def greet():
