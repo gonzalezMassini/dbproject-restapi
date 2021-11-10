@@ -50,7 +50,7 @@ class UsersController():
 
     
 # delete user
-  def removeUser(self,id):
+  def removeUser(self, id):
     return self.model.deleteUser(id)
 
 

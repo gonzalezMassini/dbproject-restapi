@@ -3,6 +3,7 @@ from flask_cors import CORS
 from controllers.createUserOccupance import create_user_occupance
 from controllers.UsersController import usersController
 from controllers.MeetingsController import meetingsController
+from controllers.AttendeesController import attendeesController
 
 
 # init app
@@ -65,6 +66,37 @@ def read_meeting(id):
 # update meeting
 
 # delete meeting
+
+
+
+
+
+# Isabel
+# create attendee
+@app.route('/create_attendee', methods=['POST'])
+def create_attendee():
+  return attendeesController.insertAttendee(request)
+
+# delete attendee
+@app.route('/delete_attendee/<int:id>', methods=['DELETE'])
+def delete_attendee(id):
+  return attendeesController.removeAttendee(id)
+
+# show attendees
+@app.route('/read_attendees', methods=['GET'])
+def get_attendees():
+  return attendeesController.showAttendees()
+
+# show attendee
+@app.route('/read_attendee/<int:id>', methods=['GET'])
+def get_attendee(id):
+  return attendeesController.showAttendee(id)
+
+# update attendee
+@app.route('/update_attendee/<int:id>', methods=['PUT'])
+def update_attendee(id):
+  return attendeesController.editAttendee(id, request)
+# Isabel
 
 @app.route('/')
 def greet():
