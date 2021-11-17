@@ -1,3 +1,4 @@
+# @author: Isabel Muniz
 from config.dbconfig import pg_config
 from flask import jsonify, request
 import psycopg2

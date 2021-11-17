@@ -1,3 +1,4 @@
+# @author: Isabel Muniz
 from flask import jsonify, request
 from models.AttendeesModel import attendeesModel
 

@@ -1,3 +1,4 @@
+# @author: Jose Gonzalez Massini
 from config.dbconfig import pg_config
 from flask import jsonify, request
 import psycopg2
@@ -17,7 +18,7 @@ class MeetingsModel():
 
   def readMeeting(self,id):
     cur = self.conn.cursor()
-    result = cur.execute('SELECT * FROM meetings where uid=%s',[id])
+    result = cur.execute('SELECT * FROM meetings where mid=%s',[id])
     meeting = cur.fetchone()
     cur.close()
     return meeting
@@ -49,23 +50,46 @@ class MeetingsModel():
 
   def deleteMeeting(self, id):
     cur = self.conn.cursor()
-    result = cur.execute('DELETE FROM meeting WHERE uid=%s',[id])
+    result = cur.execute('DELETE FROM meetings WHERE mid=%s',[id])
     self.conn.commit()
     cur.close() 
 
     return jsonify({"msg":"meeting deleted"})
 
 
-  def updateUser(self):
+  def updateMeeting(self, mid, mtype, mtimeframe, rid, uid):
     cur = self.conn.cursor()
-    # cur.execute('UPDATE users SET uemail=%s, uname=%s, upassword=%s, urole=%s WHERE uid=%s',(uemail, uname, upassword, urole, id))
+    cur.execute('UPDATE meetings SET mtype=%s, mtimeframe=%s, rid=%s, uid=%s WHERE mid=%s',(mtype, mtimeframe, rid, attendees, uid, mid))
     self.conn.commit()
     cur.close()
 
     return jsonify({'msg':'meeting updated'})
 
-    
-  
+  def busiest(self):
+    cur = self.conn.cursor()
+    lowerQuery = "select lower_hour, lowerCount from(select lower_hour, count(lower_hour) as lowerCount from(select split_part(lower_bound, ' ',2) as lower_hour from (select cast(lower(mtimeframe) as varchar) as lower_bound from meetings) as noob) as rick group by lower_hour) as food where lowerCount = (select max(lowerCount) from (select lower_hour, count(lower_hour) as lowerCount from(select split_part(lower_bound, ' ',2) as lower_hour from (select cast(lower(mtimeframe) as varchar) as lower_bound from meetings ) as noob) as rick group by lower_hour)as foo)limit 1;"
+
+    upperQuery = "select upper_hour, upperCount from(select upper_hour, count(upper_hour) as upperCount from(select split_part(upper_bound, ' ',2) as upper_hour from (select cast(upper(mtimeframe) as varchar) as upper_bound from meetings) as noob) as rick group by upper_hour) as food where upperCount = (select max(upperCount)from (select upper_hour, count(upper_hour) as upperCount from(select split_part(upper_bound, ' ',2) as upper_hour from (select cast(upper(mtimeframe) as varchar) as upper_bound from meetings) as noob) as rick group by upper_hour)as foo)limit 1;"
+
+    cur.execute(lowerQuery)
+    lowerResult = cur.fetchone()
+
+    cur.execute(upperQuery)
+    upperResult = cur.fetchone()
+
+    cur.close()
+    print(lowerResult, upperResult)
+    return {"lowerBound" : lowerResult,"upperBound": upperResult}
+
+
+  def availableTimeForEveryOne(self, id):
+    # query = 'select get_available_timeframe_for_everyone(%s);'
+    # cur = self.conn.cursor()
+    # cur.execute(query, [id])
+    # result = cur.fetchone()
+    # cur.close()
+    # return result
+    return 'not yet'
 
 
 meetingsModel = MeetingsModel()
