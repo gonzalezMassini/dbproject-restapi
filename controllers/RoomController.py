@@ -9,10 +9,12 @@ class RoomController():
         self.model = roomModel
 
     # read rooms
-    def showRooms(self, request):
+    # def showRooms(self, request):
+    def showRooms(self):
         result = []
-        uid = request.json['uid']
-        rooms = self.model.readRooms(uid)
+        # uid = request.json['uid']
+        # rooms = self.model.readRooms(uid)
+        rooms = self.model.readRooms()
         if type(rooms) == str:
             return jsonify({"msg":rooms})
             

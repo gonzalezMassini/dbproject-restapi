@@ -171,7 +171,8 @@ def get_room(id):
 # read all rooms
 @app.route('/gelatok/read_rooms', methods=['GET'])
 def get_rooms():
-  return roomController.showRooms(request)
+    return roomController.showRooms()
+  # return roomController.showRooms(request)
 
 # update room
 @app.route('/gelatok/update_room/<int:id>', methods=['PUT'])

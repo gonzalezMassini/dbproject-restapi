@@ -10,19 +10,20 @@ class RoomModel():
         connection_url = "dbname=%s user=%s password=%s port=%s host='%s'" % (pg_config['dbname'], pg_config['user'], pg_config['password'], pg_config['dbport'], pg_config['host'])
         self.conn = psycopg2.connect(connection_url)
 
-    def readRooms(self, uid):
+    # def readRooms(self, uid):
+    def readRooms(self):
         cur = self.conn.cursor()
-        cur.execute('select urole from users where uid=%s', [uid])
-        role = cur.fetchone()
-        print(role[0])
-        if role[0] == 'staff':
+        # cur.execute('select urole from users where uid=%s', [uid])
+        # role = cur.fetchone()
+        # print(role[0])
+        # if role[0] == 'staff':
             cur.execute("SELECT * FROM rooms;")
             result = cur.fetchall()
             cur.close()
             return result
-        else:
-            cur.close()
-            return "Must be staff member"
+        # else:
+        #     cur.close()
+        #     return "Must be staff member"
 
     def readRoom(self, id, uid):
         cur = self.conn.cursor()
