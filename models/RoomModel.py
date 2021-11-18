@@ -17,10 +17,10 @@ class RoomModel():
         # role = cur.fetchone()
         # print(role[0])
         # if role[0] == 'staff':
-            cur.execute("SELECT * FROM rooms;")
-            result = cur.fetchall()
-            cur.close()
-            return result
+        cur.execute("SELECT * FROM rooms;")
+        result = cur.fetchall()
+        cur.close()
+        return result
         # else:
         #     cur.close()
         #     return "Must be staff member"
