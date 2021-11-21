@@ -118,6 +118,23 @@ class RoomController():
 
         return jsonify({"available rooms": availableRooms})
 
+    def findAvailableRoomRoute(self, timeframe):
+        timeframe = timeframe
+        result = self.model.roomFinder(timeframe)
+
+        availableRooms = []
+
+        for i in range(len(result)):
+            availableRooms.append({
+                "rcapacity": result[i][1],
+                "rtype": result[i][2],
+                "rnumber": result[i][3],
+                "rbuilding": result[i][4]
+            })
+
+        return jsonify({"available rooms": availableRooms})
+
+
 
     def mostUsedRoom(self):
         # @author: Jose Gonzalez Massini

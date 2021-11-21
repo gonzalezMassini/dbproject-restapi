@@ -8,6 +8,29 @@ class UsersModel():
     connection_url = "dbname=%s user=%s password=%s port=%s host='%s'"%(pg_config['dbname'], pg_config['user'],pg_config['password'],pg_config['dbport'], pg_config['host'])
     self.conn = psycopg2.connect(connection_url)
 
+
+  def signin(self, uemail, upassword):
+    cur = self.conn.cursor()
+    query = "select * from users where uemail=%s and upassword=%s;"
+    cur.execute(query, (uemail, upassword))
+    loginResult = cur.fetchone()
+    # print(loginResult[0])
+    # print(type(loginResult[0]))
+    try:
+      if loginResult:
+        # print('login succesful')
+        cur.close()
+        return loginResult[0]
+      else:
+        # print('worng credentials')
+        cur.close()
+        return 'worng credentials'
+    except Exception as e:
+      cur.close()
+      print('DB error')
+
+
+
   def readUsers(self):
     cur = self.conn.cursor()
     cur.execute("SELECT * FROM users;")

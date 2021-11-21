@@ -7,6 +7,28 @@ class UsersController():
   def __init__(self):
     self.model = usersModel
 
+
+  def login(self, request):
+    uemail = request.json['uemail']
+    upassword = request.json['upassword']
+
+    result = self.model.signin(uemail, upassword)
+
+    if type(result) == int:
+      print({"uid": result})
+      return jsonify({"uid": result})
+    else:
+      print(result)
+      return jsonify({"uid": result})
+
+      
+
+
+
+
+
+
+
   # read users
   def showUsers(self):
     result = []
