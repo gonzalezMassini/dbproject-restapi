@@ -67,18 +67,18 @@ class MeetingsModel():
 
   def busiest(self):
     cur = self.conn.cursor()
-    lowerQuery = "select lower_hour, lowerCount from(select lower_hour, count(lower_hour) as lowerCount from(select split_part(lower_bound, ' ',2) as lower_hour from (select cast(lower(mtimeframe) as varchar) as lower_bound from meetings) as noob) as rick group by lower_hour) as food where lowerCount = (select max(lowerCount) from (select lower_hour, count(lower_hour) as lowerCount from(select split_part(lower_bound, ' ',2) as lower_hour from (select cast(lower(mtimeframe) as varchar) as lower_bound from meetings ) as noob) as rick group by lower_hour)as foo)limit 1;"
+    lowerQuery = "select lower_hour, lowerCount from(select lower_hour, count(lower_hour) as lowerCount from(select split_part(lower_bound, ' ',2) as lower_hour from (select cast(lower(mtimeframe) as varchar) as lower_bound from meetings) as noob) as rick group by lower_hour) as food order by lowerCount desc limit 5;"
 
-    upperQuery = "select upper_hour, upperCount from(select upper_hour, count(upper_hour) as upperCount from(select split_part(upper_bound, ' ',2) as upper_hour from (select cast(upper(mtimeframe) as varchar) as upper_bound from meetings) as noob) as rick group by upper_hour) as food where upperCount = (select max(upperCount)from (select upper_hour, count(upper_hour) as upperCount from(select split_part(upper_bound, ' ',2) as upper_hour from (select cast(upper(mtimeframe) as varchar) as upper_bound from meetings) as noob) as rick group by upper_hour)as foo)limit 1;"
+    upperQuery = "select upper_hour, upperCount from(select upper_hour, count(upper_hour) as upperCount from(select split_part(upper_bound, ' ',2) as upper_hour from (select cast(upper(mtimeframe) as varchar) as upper_bound from meetings) as noob) as rick group by upper_hour) as food order by upperCount desc limit 5;"
 
     cur.execute(lowerQuery)
-    lowerResult = cur.fetchone()
+    lowerResult = cur.fetchall()
 
     cur.execute(upperQuery)
-    upperResult = cur.fetchone()
+    upperResult = cur.fetchall()
 
     cur.close()
-    print(lowerResult, upperResult)
+    # print(lowerResult, upperResult)
     return {"lowerBound" : lowerResult,"upperBound": upperResult}
 
 

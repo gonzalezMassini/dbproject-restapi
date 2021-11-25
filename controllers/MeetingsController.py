@@ -70,15 +70,34 @@ class MeetingsController():
     result = self.model.busiest()
     # print(result)
     # print(result['lowerBound'][1])
-    if(result['lowerBound'][1] > result['upperBound'][1]):
-      return jsonify({"busiest hour": result['lowerBound'][0]})
+    # print(result)
+    busiestHours = []
+    lowerBoundlist = result['lowerBound']
+    upperBoundList = result['upperBound']
+    # print(lowerBoundlist)
+    # print(lowerBoundlist.pop()[0])
+    while  not len(lowerBoundlist) == 0:
+      elementToInsert = lowerBoundlist.pop()
+      busiestHours.append({ "hour":elementToInsert[0], "count": elementToInsert[1] })
 
-    elif(result['lowerBound'][1] < result['upperBound'][1]):
-      return jsonify({"busiest hour": result['upperBound'][0]})
+    while  not len(upperBoundList) == 0:
+      elementToInsert = upperBoundList.pop()
+      busiestHours.append({ "hour":elementToInsert[0], "count": elementToInsert[1] })
 
-    else:
-      return jsonify({"busiest hour": str(result['lowerBound'][0]) + ' and ' + str(result["upperBound"][0])})
 
+    def helpFunc(e):
+      return e['count']
+
+    busiestHours.sort(reverse=True,key=helpFunc)
+
+
+    while len(busiestHours) > 5:
+      # busiestHours.pop()
+      del busiestHours[len(busiestHours) - 1]
+    
+
+    # print(busiestHours)
+    return jsonify({"busiest_hours": busiestHours})
   
 
   def timeAvailable(self, id):
