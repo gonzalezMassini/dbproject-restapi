@@ -121,7 +121,7 @@ class UsersModel():
 
   def mostBooked(self, id):
     cur = self.conn.cursor()
-    query = 'select name, max(joins) as maxJoins from (select name ,count(mid) as joins from (select attendees.uid, meetings.mid, users.uname as name from (meetings inner join attendees on meetings.mid = attendees.mid inner join users on attendees.uid = users.uid)where meetings.mid in (select meetings.mid from meetings inner join attendees on meetings.mid = attendees.mid where attendees.uid = 2))as foo where uid != 2 group by foo.uid, name )as food group by name limit 1;'
+    query = 'select name, max(joins) as maxJoins from (select name ,count(mid) as joins from (select attendees.uid, meetings.mid, users.uname as name from (meetings inner join attendees on meetings.mid = attendees.mid inner join users on attendees.uid = users.uid)where meetings.mid in (select meetings.mid from meetings inner join attendees on meetings.mid = attendees.mid where attendees.uid = %s))as foo where uid != %s group by foo.uid, name )as food group by name limit 1;'
     cur.execute(query, (id, id))
     result = cur.fetchall()
     print(result)
