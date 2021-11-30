@@ -117,7 +117,7 @@ class RoomModel():
         # @author: Jose Gonzalez Massini
         cur = self.conn.cursor()
 
-        query = 'select * from rooms where rid not in (select rid from rooms natural inner join room_occupance where rotimeframe in (%s))'
+        query = 'select * from rooms where rid not in (select rid from rooms natural inner join room_occupance where rotimeframe && (%s))'
 
         cur.execute(query, [timeframe])
         result = cur.fetchall()

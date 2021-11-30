@@ -5,85 +5,10 @@ from controllers.UsersController import usersController
 from controllers.AttendeesController import attendeesController
 from controllers.MeetingsController import meetingsController
 from controllers.RoomController import roomController
-import psycopg2.extras
-
-
-# from werkzeug.security import generate_password_hash, check_password_hash
-# from datetime import timedelta
-# redeploy
-# git test
 
 # init app
 app = Flask(__name__)
 CORS(app)
-
-# CORS(app, origins=['localhost:3000'], supports_credentials=True)
-
-
-# DB_HOST = "ec2-54-92-230-7.compute-1.amazonaws.com"
-# DB_NAME = "d8c6ms71i5k6np"
-# DB_USER = "bdtkvvsguqkyhw"
-# DB_PASS = "31a04c2244936db8bfd5b69cc33966261cf08c00d2bfb41e83b3e20d67256ba1"
-
-# conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASS, host=DB_HOST)
-
-# app.config['SECRET_KEY'] = 'elproyectotuyo'
-  
-# app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes=10)
-
- 
-# @app.route('/gleatok/')
-# def home():
-#     # passhash = generate_password_hash('sejodio')
-#     # print(passhash)
-#     if 'username' in session:
-#         username = session['username']
-#         return jsonify({'message' : 'You are already logged in', 'username' : username})
-#     else:
-#         resp = jsonify({'message' : 'Unauthorized'})
-#         # resp.status_code = 401
-#         return resp
-  
-# @app.route('/gelatok/login', methods=['POST'])
-# def login():
-#     _json = request.json
-#     _username = _json['username']
-#     _password = _json['password']
-#     print(_password)
-#     # validate the received values
-#     if _username and _password:
-#         #check user exists          
-#         cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-          
-#         sql = "SELECT * FROM users WHERE uname=%s"
-#         sql_where = (_username)
-          
-#         cursor.execute(sql, [sql_where])
-#         row = cursor.fetchone()
-#         username = row['uname']
-#         password = row['upassword']
-#         print(password)
-#         if row:
-#             # if check_password_hash(password, _password):
-#             if password == _password:
-#                 session['username'] = username
-#                 cursor.close()
-#                 return jsonify({'message' : 'You are logged in successfully'})
-#             else:
-#                 resp = jsonify({'message' : 'Bad Request - invalid password'})
-#                 # resp.status_code = 400
-#                 cursor.close()
-#                 return resp
-#     else:
-#         resp = jsonify({'message' : 'Bad Request - invalid credendtials'})
-#         # resp.status_code = 400
-#         return resp
-          
-# @app.route('/gelatok/logout')
-# def logout():
-#     if 'username' in session:
-#         session.pop('username', None)
-#     return jsonify({'message' : 'You successfully logged out'})
 
 # @Jose Gonzalez Massini
 
@@ -106,13 +31,7 @@ def delete_user(id):
 # read all users
 @app.route('/gelatok/read_users', methods=['GET'])
 def get_users():
-
-  # if 'username' in session:
   return usersController.showUsers()
-  # else:
-  #     resp = jsonify({'message' : 'Unauthorized'})
-  #     resp.status_code = 401
-  #     return resp
 
 # read user single
 @app.route('/gelatok/read_user/<int:id>', methods=['GET'])
@@ -170,7 +89,7 @@ def find_available_room():
 # same without request, insted pass timeframe through the route params
 @app.route('/gelatok/find_available_room/<string:timeframe>', methods=['GET'])
 def find_available_room_route(timeframe):
-  return usersController.findAvailableRoomRoute(timeframe)
+  return roomController.findAvailableRoomRoute(timeframe)
 
 
 # find who appointed a room at a certain time

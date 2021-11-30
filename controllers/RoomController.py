@@ -126,6 +126,7 @@ class RoomController():
 
         for i in range(len(result)):
             availableRooms.append({
+                "rid": result[i][0],
                 "rcapacity": result[i][1],
                 "rtype": result[i][2],
                 "rnumber": result[i][3],
