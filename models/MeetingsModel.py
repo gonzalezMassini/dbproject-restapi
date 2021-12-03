@@ -30,14 +30,14 @@ class MeetingsModel():
     resultCreatedMeeting = cur.execute("INSERT INTO meetings (rid, uid, mtimeframe, mtype) VALUES (%s,%s,%s,%s) returning mid",(rid, uid, mtimeframe, mtype))
     id_of_new_row = cur.fetchone()[0]
     # print(id_of_new_row, attendees)
-    resultCreatorOccupance = cur.execute("INSERT INTO user_occupance (uid, uotimeframe, title) VALUES (%s,%s)",(uid, mtimeframe, mtype))
+    resultCreatorOccupance = cur.execute("INSERT INTO user_occupance (uid, uotimeframe, title) VALUES (%s,%s,%s)",(uid, mtimeframe, mtype))
     insertCreatorAttendee = cur.execute("INSERT INTO attendees (uid, mid) VALUES (%s,%s)",(uid, id_of_new_row))
     roomOccuance = cur.execute("INSERT INTO room_occupance (rid, rotimeframe) VALUES (%s,%s)",(rid, mtimeframe))
 
     for attende in attendees:
       attendeeUid = attende['uid']
       cur.execute("INSERT INTO attendees (uid, mid) VALUES (%s,%s)", (attendeeUid, id_of_new_row))
-      cur.execute("INSERT INTO user_occupance (uid, uotimeframe, title) VALUES (%s,%s)",(attendeeUid, mtimeframe, mtype))
+      cur.execute("INSERT INTO user_occupance (uid, uotimeframe, title) VALUES (%s,%s,%s)",(attendeeUid, mtimeframe, mtype))
 
     # print(mtimeframe)
     # commit to DB
