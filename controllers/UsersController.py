@@ -85,10 +85,12 @@ class UsersController():
   def showUserOccupance(self,id):
     occupances=[]
     result = self.model.readUserOccupance(id)
+    print(result)
     for i in range(len(result)):
       occupances.append({
         "uname":result[i][0],
-        "uotimeframe":str(result[i][1])
+        "uotimeframe":str(result[i][1]),
+        "title":result[i][2]
       })
       
     return jsonify(occupances)
@@ -98,7 +100,8 @@ class UsersController():
   def insertUserOccupance(self, id, request):
     uid = id
     uotimeframe = request.json['uotimeframe']
-    return self.model.createUserOccupance(uid, uotimeframe)
+    title = request.json['title']
+    return self.model.createUserOccupance(uid, uotimeframe, title)
 
 
   def whoAppointedRoom(self, request):

@@ -80,15 +80,15 @@ class UsersModel():
 
   def readUserOccupance(self, id):
     cur = self.conn.cursor()
-    cur.execute('select uname, uotimeframe from user_occupance natural inner join users where uid=%s',[id])
+    cur.execute('select uname, uotimeframe, title from user_occupance natural inner join users where uid=%s',[id])
     queryResult = cur.fetchall()
     result = cur.fetchall()
     cur.close()
     return queryResult
 
-  def createUserOccupance(self, uid, uotimeframe):
+  def createUserOccupance(self, uid, uotimeframe, title):
     cur = self.conn.cursor()
-    cur.execute("INSERT INTO user_occupance(uid, uotimeframe) VALUES(%s,%s)",(uid, uotimeframe))
+    cur.execute("INSERT INTO user_occupance(uid, uotimeframe, title) VALUES(%s,%s,%s)",(uid, uotimeframe, title))
     self.conn.commit()
     cur.close()
     return jsonify({"message": "user occupance created"})
