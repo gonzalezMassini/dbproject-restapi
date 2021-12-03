@@ -131,7 +131,7 @@ class UsersModel():
 
   def meetingOfOccupances(self, id):
     cur = self.conn.cursor()
-    query = "select mtimeframe from attendees inner join meetings on meetings.mid = attendees.mid where attendees.uid = %s;"
+    query = "select mtimeframe,mtype from attendees inner join meetings on meetings.mid = attendees.mid where attendees.uid = %s;"
     cur.execute(query, [id])
     result = cur.fetchall()
     cur.close()

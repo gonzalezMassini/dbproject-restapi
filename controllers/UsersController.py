@@ -34,6 +34,7 @@ class UsersController():
     result = []
     users = self.model.readUsers()
     
+    # print(users)
     for i in range(len(users)):
       result.append({
         "uid":users[i][0],
@@ -49,7 +50,7 @@ class UsersController():
   # read user 
   def showUser(self,id):
     user = self.model.readUser(id)
-
+    
     result = {"uid":user[0], "uname":user[1],"uemail":user[2],"upassword":user[3],"urole":user[4]}
 
     return jsonify(result)
@@ -147,10 +148,10 @@ class UsersController():
 
   def meetingOccupances(self, id):
     result = self.model.meetingOfOccupances(id)
-    print(str(result[0]))
+    # print(str(result))
     meetingTimeFrames = []
     for i in range(len(result)):
-      meetingTimeFrames.append(str(result[i][0]))
+      meetingTimeFrames.append({"uotimeframe":str(result[i][0]), "title":result[i][1]})
     return jsonify({'meetings': meetingTimeFrames})
 
 
