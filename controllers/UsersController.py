@@ -145,5 +145,13 @@ class UsersController():
     return jsonify({"most_booked_with": most_booked_with})
 
 
+  def meetingOccupances(self, id):
+    result = self.model.meetingOfOccupances(id)
+    print(str(result[0]))
+    meetingTimeFrames = []
+    for i in range(len(result)):
+      meetingTimeFrames.append(str(result[i][0]))
+    return jsonify({'meetings': meetingTimeFrames})
+
+
 usersController = UsersController()
-      

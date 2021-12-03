@@ -129,6 +129,11 @@ def busiest_hours():
 def time_available(id):
   return meetingsController.timeAvailable(id)
 
+# find timeframes that are meetings for users
+@app.route('/gelatok/user/<int:id>/read_meeting_occupance', methods=['GET'])
+def user_occupance_meeting(id):
+  return usersController.meetingOccupances(id)
+
   # @Jose Gonzalez Massini
 
 
