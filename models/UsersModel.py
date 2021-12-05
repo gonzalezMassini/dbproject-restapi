@@ -103,7 +103,8 @@ class UsersModel():
 
   def usedRoomMost(self, id):
     cur = self.conn.cursor()
-    query = 'select rnumber, rooms_appointments from(select rnumber, rid, count(rid) as rooms_appointments from meetings natural inner join rooms where uid=%s group by  rid, rnumber order by rooms_appointments desc) as foo natural inner join rooms where rooms_appointments = (select max(rooms_appointments) from (select rnumber, rid, count(rid) as rooms_appointments from meetings natural inner join rooms where uid=%s group by  rid, rnumber order by rooms_appointments desc) as food)'
+
+    query = "select rooms.rnumber, rooms_appointments from(select rooms.rnumber, rooms.rid, count(rooms.rid) as rooms_appointments from meetings inner join rooms on meetings.rid = rooms.rid inner join attendees on meetings.mid = attendees.mid where attendees.uid=%s group by  rooms.rid, rooms.rnumber order by rooms_appointments desc) as foo natural inner join rooms where rooms_appointments = (select max(rooms_appointments)from (select rooms.rid, count(rooms.rid) as rooms_appointments from meetings inner join rooms on meetings.rid = rooms.rid inner join attendees on meetings.mid = attendees.mid where attendees.uid=%s group by  rooms.rid, rooms.rnumber order by rooms_appointments desc) as food);"
 
     cur.execute(query, (id, id))
     result = cur.fetchone()
