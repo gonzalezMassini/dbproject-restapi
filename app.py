@@ -53,6 +53,12 @@ def read_user_occupance(id):
 def create_user_occupance(id):
   return usersController.insertUserOccupance(id, request)
 
+# find all meeting created by a given user
+@app.route('/gelatok/user/<int:id>/created_meets', methods=['GET'])
+def find_meeting(id):
+  return usersController.userMeets(id)
+
+
 # create meeting
 @app.route('/gelatok/create_meeting', methods=['POST'])
 def create_meeting():
@@ -72,8 +78,8 @@ def read_meeting(id):
 # update meeting
 @app.route('/gelatok/update_meeting/<int:id>', methods=['PUT'])
 def update_meeting(id):
-  # return meetingsController.editMeeting(id, request)
-  return "not yet"
+  return meetingsController.editMeeting(id, request)
+  # return "not yet"
 
 # delete meeting
 @app.route('/gelatok/delete_meeting/<int:id>', methods=['DELETE'])
@@ -197,7 +203,7 @@ def update_room(id):
 # room occupance routes
 
 # read room occupance
-@app.route('/gelatok/room/<int:id>/read_room_occupance', methods=['GET'])
+@app.route('/gelatok/room/<int:id>/read_room_occupance', methods=['GET','POST'])
 def room_occupance(id):
   return roomController.showRoomOccupance(id, request)
 

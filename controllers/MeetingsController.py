@@ -60,11 +60,8 @@ class MeetingsController():
   def editMeeting(self,id,request):
     mid = id
     mtype = request.json['mtype']
-    mtimeframe = request.json['mtimeframe']
-    rid = request.json['rid']
-    uid = request.json['uid']
 
-    return self.model.updateMeeting(mid, mtype, mtimeframe, rid, attendees, uid)
+    return self.model.updateMeeting(mid, mtype)
 
   def busiestHours(self):
     result = self.model.busiest()

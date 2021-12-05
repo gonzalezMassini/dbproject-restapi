@@ -20,7 +20,7 @@ class UsersModel():
       if loginResult:
         # print('login succesful')
         cur.close()
-        return loginResult[0]
+        return {"uid":loginResult[0], "urole":loginResult[3]}
       else:
         # print('worng credentials')
         cur.close()
@@ -70,9 +70,9 @@ class UsersModel():
 
     return jsonify({"msg":"user deleted"})
 
-  def updateUser(self, id, uemail, uname, upassword, urole):
+  def updateUser(self, id, uemail, uname, upassword):
     cur = self.conn.cursor()
-    cur.execute('UPDATE users SET uemail=%s, uname=%s, upassword=%s, urole=%s WHERE uid=%s',(uemail, uname, upassword, urole, id))
+    cur.execute('UPDATE users SET uemail=%s, uname=%s, upassword=%s WHERE uid=%s',(uemail, uname, upassword, id))
     self.conn.commit()
     cur.close()
 
@@ -104,7 +104,7 @@ class UsersModel():
   def usedRoomMost(self, id):
     cur = self.conn.cursor()
     query = 'select rnumber, rooms_appointments from(select rnumber, rid, count(rid) as rooms_appointments from meetings natural inner join rooms where uid=%s group by  rid, rnumber order by rooms_appointments desc) as foo natural inner join rooms where rooms_appointments = (select max(rooms_appointments) from (select rnumber, rid, count(rid) as rooms_appointments from meetings natural inner join rooms where uid=%s group by  rid, rnumber order by rooms_appointments desc) as food)'
-    
+
     cur.execute(query, (id, id))
     result = cur.fetchone()
     print(result)
@@ -136,5 +136,20 @@ class UsersModel():
     result = cur.fetchall()
     cur.close()
     return result
+
+  def createdMeetings(self, uid):
+    cur = self.conn.cursor()
+    query = "select * from meetings where uid = %s;"
+    
+    cur.execute(query, [uid])
+    result = cur.fetchall()
+
+    attendeesQuery = "select users.uname,  users.uid, meetings.mid from meetings inner join attendees on meetings.mid = attendees.mid inner join users on attendees.uid = users.uid where meetings.uid = %s and attendees.uid != %s;"
+    cur.execute(attendeesQuery, (uid, uid))
+    attendees = cur.fetchall()
+
+
+    cur.close()
+    return {"meets":result, "attendees":attendees}
 
 usersModel = UsersModel()

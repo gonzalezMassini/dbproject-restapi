@@ -61,11 +61,9 @@ class RoomController():
     # update room
     def editRoom(self, id, request):
         rcapacity = request.json['rcapacity']
-        rtype = request.json['rtype']
-        rnumber = request.json['rnumber']
-        rbuilding = request.json['rbuilding']
+        
 
-        return self.model.updateRoom(id, rcapacity, rtype, rnumber, rbuilding)
+        return self.model.updateRoom(id, rcapacity)
 
     def showRoomOccupance(self,id, request):
         uid = request.json['uid']

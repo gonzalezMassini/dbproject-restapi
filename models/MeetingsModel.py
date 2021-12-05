@@ -11,7 +11,7 @@ class MeetingsModel():
   def readMeetings(self):
     cur = self.conn.cursor()
     cur.execute("SELECT * FROM meetings;")
-    result = cur.fetchall() 
+    result = cur.fetchall()
     cur.close()
     return result
     
@@ -57,9 +57,9 @@ class MeetingsModel():
     return jsonify({"msg":"meeting deleted"})
 
 
-  def updateMeeting(self, mid, mtype, mtimeframe, rid, uid):
+  def updateMeeting(self, mid, mtype):
     cur = self.conn.cursor()
-    cur.execute('UPDATE meetings SET mtype=%s, mtimeframe=%s, rid=%s, uid=%s WHERE mid=%s',(mtype, mtimeframe, rid, attendees, uid, mid))
+    cur.execute('UPDATE meetings SET mtype=%s WHERE mid=%s',(mtype, mid))
     self.conn.commit()
     cur.close()
 

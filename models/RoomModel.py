@@ -30,7 +30,7 @@ class RoomModel():
         cur.execute('select urole from users where uid=%s', [uid])
         role = cur.fetchone()
         print(role[0])
-        if role[0] == 'staff':
+        if role[0] == 'super admin':
             result = cur.execute('SELECT * FROM rooms where rid=%s', [id])
             room = cur.fetchone()
             cur.close()
@@ -57,10 +57,10 @@ class RoomModel():
 
         return jsonify({"msg": "room deleted"})
 
-    def updateRoom(self, id, rcapacity, rtype, rnumber, rbuilding):
+    def updateRoom(self, id, rcapacity):
         cur = self.conn.cursor()
-        cur.execute('UPDATE rooms SET rcapacity=%s, rtype=%s, rnumber=%s, rbuilding=%s WHERE rid=%s',
-                    (rcapacity, rtype, rnumber, rbuilding, id))
+        cur.execute('UPDATE rooms SET rcapacity=%s WHERE rid=%s',
+                    (rcapacity, id))
         self.conn.commit()
         cur.close()
 
@@ -71,7 +71,7 @@ class RoomModel():
         cur.execute('select urole from users where uid=%s', [uid])
         role = cur.fetchone()
         print(role[0])
-        if role[0] == 'staff':
+        if role[0] == 'super admin':
             cur.execute('select roid, rotimeframe, rnumber from room_occupance natural inner join rooms where rid=%s',[id])
             queryResult= cur.fetchall()
             cur.close()
@@ -85,7 +85,7 @@ class RoomModel():
         cur.execute('select urole from users where uid=%s', [uid])
         role = cur.fetchone()
         print(role[0])
-        if role[0] == 'staff':
+        if role[0] == 'super admin':
             result = cur.execute("INSERT INTO room_occupance(rid, rotimeframe) VALUES(%s,%s)",(id, rotimeframe))
             # commit to DB
             self.conn.commit()
