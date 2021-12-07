@@ -180,4 +180,20 @@ class UsersController():
     return jsonify({"createdMeetings":meetings, "attendees":atnds})
 
 
+
+  def userOcc(self):
+
+    result = self.model.occ()
+    occ = []
+    for i in range(len(result)):
+      occ.append({
+        "uid":result[i][0],
+        "uotimeframe":str(result[i][2]),
+        "uname":result[i][7]
+      })
+
+    return jsonify({"occupances":occ})
+
+
+
 usersController = UsersController()

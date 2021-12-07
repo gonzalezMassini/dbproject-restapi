@@ -153,4 +153,16 @@ class UsersModel():
     cur.close()
     return {"meets":result, "attendees":attendees}
 
+
+
+  def occ(self):
+    cur = self.conn.cursor()
+    query = "select * from user_occupance natural inner join users;"
+    
+    cur.execute(query)
+    result = cur.fetchall()
+    cur.close()
+    return result
+
+
 usersModel = UsersModel()

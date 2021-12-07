@@ -18,6 +18,12 @@ def loginTec():
   return usersController.login(request)
 
 
+# user occupances 
+@app.route('/gelatok/user_occupances',methods=['GET'])
+def occupances():
+  return usersController.userOcc()
+
+
 # create user
 @app.route('/gelatok/create_user', methods=['POST'])
 def create_user():
