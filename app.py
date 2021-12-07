@@ -24,6 +24,11 @@ def occupances():
   return usersController.userOcc()
 
 
+@app.route('/gelatok/delete_occupance/<int:id>/<string:timeframe>', methods=["DELETE"])
+def deleteOcc(id, timeframe):
+  return usersController.dltOccupance(id, timeframe)
+
+
 # create user
 @app.route('/gelatok/create_user', methods=['POST'])
 def create_user():

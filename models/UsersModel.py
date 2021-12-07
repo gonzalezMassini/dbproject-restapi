@@ -165,4 +165,13 @@ class UsersModel():
     return result
 
 
+  def occDLT(self, id, timeframe):
+    cur = self.conn.cursor()
+    query = "delete from user_occupance where uid = %s and uotimeframe=%s;"
+    cur.execute(query, (id, timeframe))
+    self.conn.commit()
+    cur.close()
+    return 'deleted occupance'
+
+
 usersModel = UsersModel()

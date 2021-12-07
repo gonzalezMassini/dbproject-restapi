@@ -195,5 +195,11 @@ class UsersController():
     return jsonify({"occupances":occ})
 
 
+  def dltOccupance(self, id, timeframe):
+    # timeframe = request.json["timeframe"]
+    self.model.occDLT(id, timeframe)
+    return 'occupance deleted'
+
+
 
 usersController = UsersController()
